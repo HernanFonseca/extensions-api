@@ -4,6 +4,10 @@
     "extensions": {
         "uinamespace": {
             "path": "./Samples/UINamespace-sandboxed"
+        },
+
+        "DimAsCb":{
+            "path": "./MyExtensions/DimAsCb"
         }
     }
 }
