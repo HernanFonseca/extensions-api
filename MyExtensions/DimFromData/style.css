@@ -35,20 +35,3 @@ p{
 	font-family: sans-serif;
 	color: #595959;
 }
-
-.button {
-	background-color: #2DCC97; /*Go Green */
-	border: none;
-	border-radius: 1px;
-	color: white;
-	height: 24px;
-	padding: 2px 24px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 10pt;
-}
-.button:hover{
-	background-color: #2FA37D /*Go Green Dark */;
-	cursor: pointer;
-}

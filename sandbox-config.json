@@ -8,6 +8,9 @@
 
         "DimAsCb":{
             "path": "./MyExtensions/DimAsCb"
+        },
+        "DimFromData":{
+            "path":"./MyExtensions/DimFromData"
         }
     }
 }
