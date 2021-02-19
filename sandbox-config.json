@@ -9,8 +9,8 @@
         "DimAsCb":{
             "path": "./MyExtensions/DimAsCb"
         },
-        "DimFromData":{
-            "path":"./MyExtensions/DimFromData"
+        "SearchBar":{
+            "path":"./MyExtensions/SearchBar"
         }
     }
 }

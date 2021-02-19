@@ -9,9 +9,9 @@ input[type=checkbox].css-checkbox + label.css-label {
 	line-height:17px;
 	background-repeat:no-repeat;
 	background-position: 0 0;
-	font-size:11px;
+	font-size:10pt;
 	color: #595959;
-	font-family: sans-serif;
+	font-family: 'BentonSansBook', sans-serif;
 	vertical-align:middle;
 	cursor:pointer;
 
@@ -29,11 +29,15 @@ label.css-label {
 	-ms-user-select: none;
 	user-select: none;
 }
-
+@font-face {
+    font-family: BentonSansBook;
+    src: url("../../lib/extras/BentonSans\ Book.otf") format("opentype");
+}
 p{
-	font-size: 11px;
-	font-family: sans-serif;
-	color: #595959;
+	font-size: 10pt;
+	font-family: 'BentonSansBook', sans-serif;
+	Font-weight: normal;
+	color: #000000;
 }
 
 .button {
