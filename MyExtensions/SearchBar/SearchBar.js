@@ -35,18 +35,35 @@
                 logicalTables.forEach(function(table){
                     dataSource.getLogicalTableDataAsync(table.id).then(function (dataTable){
                         console.log(dataTable);
-                        let field = dataTable.columns.find(column => column.fieldName === "Div Consolidada");
+                        // lista de los valores para el autocompletado
                         let list = [];
-                        for (let row of dataTable.data) {
-                            list.push(row[field.index].value);
-                        }
-                        let values = list.filter((el, i, arr) => arr.indexOf(el) === i);
-                        console.log(values)
+                        // patrón en RegEx para algunas columnas irrelevantes
+                        let patt = /[0-9]/
+                        dataTable.columns.forEach(function (field){
+                            // Filtra columnas que no competen (Probablemente se puede simplificar un poco)
+                            if (!field.fieldName.startsWith("Inv") && !field.fieldName.startsWith("Venta")
+                            && !field.fieldName.startsWith("Cod") && field.dataType =="string"
+                            && !field.fieldName.startsWith("Estilo") && !patt.test(field.fieldName)){
+                                // Ciclo para los datos
+                                for (let row of dataTable.data) {
+                                    // Evita duplicados
+                                    if(list.find(o=>o.value===row[field.index].value && o.column===field.fieldName)===undefined){
+                                        const option={
+                                            value:row[field.index].value,
+                                            column:field.fieldName
+                                        }
+                                        list.push(option);
+                                    }
+                                    
+                                }
+                            }
+                            
+                        })
+                        console.log(list)
                     })
                 });
                 
             });
         }
-        //return content
     }
 })();
