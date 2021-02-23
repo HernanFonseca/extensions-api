@@ -78,7 +78,7 @@
 
     function configure() { 
         const popupUrl = `${window.location.origin}/MyExtensions/DimAsCb/Setup.html`;
-        tableau.extensions.ui.displayDialogAsync(popupUrl, { height: 500, width: 500 }).then((closePayload) => {
+        tableau.extensions.ui.displayDialogAsync(popupUrl,openPayload, { height: 500, width: 500 }).then((closePayload) => {
           // The promise is resolved when the dialog has been expectedly closed, meaning that
           // the popup extension has called tableau.extensions.ui.closeDialog.
           // ...
