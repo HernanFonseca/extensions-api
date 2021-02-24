@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Settings Sample</title>
+    <title>Settings for Dimensions as Checkboxes</title>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -28,13 +28,10 @@
       <hr />
 
       <h5>Source parameter: </h5>
-      <div style="margin-left: 14px" id="datasources">
-      </div>
-      <h5>Refresh interval in minutes:</h5>
-      <input style="margin-left: 14px" type="number" id="interval" name="quantity" min="1" max="60">
-
+      <input type="text" id="txtSrcParam" name="SourceParameter">
+      
       <hr />
-      <button id="closeButton">Start Auto Refresh</button>
+      <button id="btnSave">Save</button>
     </div>
   </body>
 </html>

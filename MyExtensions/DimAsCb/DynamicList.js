@@ -48,13 +48,6 @@
                     button.textContent='Aplicar';
                     button.addEventListener('click', (event)=>{
                         dashboard.getParametersAsync().then(function(parameters){
-                            // for (let i = 0; i < selectedValues.length; i++) {
-                            //     const element = selectedValues[i];
-                            //     parameters.find(p=>p.parameterImpl.name==='Dimension '+(i+1)).changeValueAsync(element);
-                            // }
-                            // for (let i=selectedValues.length; i<9;i++){
-                            //     parameters.find(p=>p.parameterImpl.name==='Dimension '+(i+1)).changeValueAsync('Seleccione una dimensión');
-                            // }
                             let selectedString='';
                             selectedValues.forEach(function(val){
                                 selectedString+=val +'|';
@@ -77,15 +70,11 @@
     });
 
     function configure() { 
+        const defaultPayload=1;
         const popupUrl = `${window.location.origin}/MyExtensions/DimAsCb/Setup.html`;
-        tableau.extensions.ui.displayDialogAsync(popupUrl,openPayload, { height: 500, width: 500 }).then((closePayload) => {
-          // The promise is resolved when the dialog has been expectedly closed, meaning that
-          // the popup extension has called tableau.extensions.ui.closeDialog.
-          // ...
-            
-          // The close payload is returned from the popup extension via the closeDialog() method.
-         // ....
-    
+        tableau.extensions.ui.displayDialogAsync(popupUrl, defaultPayload, { height: 500, width: 500 }).then((closePayload) => {
+            // This is executed when the dialog is succesfully closed
+            console.log(closePayload);
         }).catch((error) => {
             //In case they just click the X to close.
             switch (error.errorCode) {
