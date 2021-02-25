@@ -44,7 +44,7 @@
                 const dataSource = dataSources[dataSourceId];
                 dataSource.getLogicalTablesAsync().then(function (logicalTables) {
                     logicalTables.forEach(function(table){
-                        dataSource.getLogicalTableDataAsync(table.id, maxRows=100000).then(function (dataTable){
+                        dataSource.getLogicalTableDataAsync(table.id, 100000).then(function (dataTable){
                             console.log(dataTable);
                             // lista de los valores para el autocompletado
                             let list = [];
@@ -82,9 +82,10 @@
         /*the autocomplete function takes two arguments,
         the text field element and an array of possible autocompleted values:*/
         var currentFocus;
+        // Array for the filtervalues
         /*execute a function when someone writes in the text field:*/
         inp.addEventListener("input", function(e) {
-            var a, b, i, val = this.value;
+            var a, b, c, content, i, val = this.value;
             /*close any already open lists of autocompleted values*/
             closeAllLists();
             if (!val) { return false;}
@@ -100,7 +101,30 @@
                 /*check if the item starts with the same letters as the text field value:*/
                 if (arr[i].value.substr(0, val.length).toUpperCase() == val.toUpperCase()) {
                 /*create a DIV element for each matching element:*/
+                // first a div for columns with the matching element
+                if (document.getElementById("div-"+arr[i].column)===null){
+                    c = document.createElement("button");
+                    c.className="collapsible";
+                    c.id = "div-"+arr[i].column;
+                    c.innerHTML = arr[i].column;
+                    content=document.createElement("div");
+                    content.className="content";
+                    
+                    c.addEventListener("click", function(){
+                        this.classList.toggle("active");
+                        var content = this.nextElementSibling;
+                        if (content.style.display === "block") {
+                            content.style.display = "none";
+                        } else {
+                            content.style.display = "block";
+                        }
+                    });
+                    a.appendChild(c);
+                    a.appendChild(content);
+                }
+                // Then a div for each element of each column
                 b = document.createElement("DIV");
+                b.setAttribute("class", "autocomplete-match")
                 /*make the matching letters bold:*/
                 b.innerHTML = "<strong>" + arr[i].value.substr(0, val.length) + "</strong>";
                 b.innerHTML += arr[i].value.substr(val.length);
@@ -110,11 +134,39 @@
                 b.addEventListener("click", function(e) {
                     /*insert the value for the autocomplete text field:*/
                     inp.value = this.getElementsByTagName("input")[0].value;
+                    // Esto filtra realmente el libro
+                    const dashboard = tableau.extensions.dashboardContent.dashboard;
+                    const worksheet = dashboard.worksheets.find(w=>w.name==='Hoja 2')
+                    let values=[this.textContent]
+                    worksheet.applyFilterAsync(this.parentNode.previousSibling.textContent,values,"add", false )
+                    // Lista con los filtros aplicados
+                    let filterContainer=document.getElementById('ActiveFilters');
+                    // Objeto representante del nuevo filtro
+                    let newFilter = document.createElement('input');
+                    newFilter.type='checkbox';
+                    newFilter.className='css-checkbox';
+                    newFilter.id='cb-'+this.textContent+'-'+this.parentNode.previousSibling.textContent
+                    newFilter.checked=true
+                    newFilter.value=this.textContent;
+                    newFilter.addEventListener('click', (event)=>{
+                        console.log('Clickitty-Click')
+                        // worksheet.applyFilterAsync(this.id.split('-')[2],[this.value],"remove", false)
+                    })
+                    var label = document.createElement('label');
+                    label.className='css-label'
+                    label.htmlFor='cb'+this.textContent+'-'+this.parentNode.previousSibling.textContent;
+                    label.appendChild(document.createTextNode(this.textContent+'-'+this.parentNode.previousSibling.textContent));
+
+                    // Agrega el objeto a la interfaz
+                    filterContainer.appendChild(newFilter);
+                    filterContainer.appendChild(label);
+                    filterContainer.appendChild(document.createElement('br'));
                     /*close the list of autocompleted values,
                     (or any other open lists of autocompleted values:*/
                     closeAllLists();
                 });
-                a.appendChild(b);
+                
+                content.appendChild(b);
                 }
             }
         });
@@ -151,7 +203,8 @@
             if (currentFocus >= x.length) currentFocus = 0;
             if (currentFocus < 0) currentFocus = (x.length - 1);
             /*add class "autocomplete-active":*/
-            x[currentFocus].classList.add("autocomplete-active");
+            if(x[currentFocus].classList.includes("autocomplete-match")){x[currentFocus].classList.add("autocomplete-active");}
+            
         }
         function removeActive(x) {
             /*a function to remove the "active" class from all autocomplete items:*/
@@ -170,8 +223,8 @@
             }
         }
         /*execute a function when someone clicks in the document:*/
-        document.addEventListener("click", function (e) {
-            closeAllLists(e.target);
-        });
+        // document.addEventListener("click", function (e) {
+        //     closeAllLists(e.target);
+        // });
     }
 })();
